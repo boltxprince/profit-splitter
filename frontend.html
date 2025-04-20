@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SplitWise | Automated Profit Distribution for Teams</title>
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --primary-dark: #2563eb;
+            --secondary: #10b981;
+            --dark: #1e293b;
+            --light: #f1f5f9;
+            --accent: #f59e0b;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        header {
+            background-color: var(--dark);
+            color: white;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo-icon {
+            margin-right: 0.5rem;
+            color: var(--accent);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+        
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.375rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #0d9668;
+        }
+        
+        .hero {
+            padding: 6rem 0;
+            text-align: center;
+            background: linear-gradient(rgba(30, 41, 59, 0.9), rgba(30, 41, 59, 0.7)), url("/api/placeholder/1200/600") no-repeat center;
+            background-size: cover;
+            color: white;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+        
+        .section {
+            padding: 5rem 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .section-title p {
+            font-size: 1.125rem;
+            color: #64748b;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .feature-card {
+            background-color: white;
+            border-radius: 0.5rem;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-icon {
+            background-color: var(--primary);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .how-it-works {
+            background-color: #f8fafc;
+        }
+        
+        .steps {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .step {
+            display: flex;
+            gap: 2rem;
+            align-items: flex-start;
+        }
+        
+        .step-number {
+            background-color: var(--primary);
+            color: white;
+            font-weight: 700;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .step-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .use-cases {
+            background-color: white;
+        }
+        
+        .case-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .case-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            padding: 2rem;
+            transition: border-color 0.3s;
+        }
+        
+        .case-card:hover {
+            border-color: var(--primary);
+        }
+        
+        .case-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+        
+        .cta {
+            background-color: var(--dark);
+            color: white;
+            text-align: center;
+        }
+        
+        .demo {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            margin-top: 3rem;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .demo-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+        }
+        
+        .demo-tab {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-weight: 600;
+            color: #64748b;
+            border-bottom: 2px solid transparent;
+            transition: color 0.3s, border-color 0.3s;
+        }
+        
+        .demo-tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+        
+        .demo-content {
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .demo-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.375rem;
+            font-size: 1rem;
+        }
+        
+        .contributors {
+            margin-top: 2rem;
+        }
+        
+        .contributor {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.375rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .contributor-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .contributor-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .results {
+            margin-top: 2rem;
+            padding: 1rem;
+            background-color: #f8fafc;
+            border-radius: 0.375rem;
+        }
+        
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 4rem 0 2rem;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .footer-col h3 {
+            font-size: 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+        
+        .footer-links a {
+            color: #cbd5e1;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #334155;
+            color: #94a3b8;
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.25rem;
+            }
+            
+            .hero p {
+                font-size: 1.125rem;
+            }
+            
+            .demo-form {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <span class="logo-icon">⚡</span>
+                    SplitWise
+                </div>
+                <div class="nav-links">
+                    <a href="#features">Features</a>
+                    <a href="#how-it-works">How It Works</a>
+                    <a href="#use-cases">Use Cases</a>
+                    <a href="#demo">Demo</a>
+                </div>
+                <a href="#connect" class="btn">Connect Wallet</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Fair Profit Distribution For Teams Without The Trust Issues</h1>
+            <p>An automated smart contract that splits earnings fairly and transparently for creators, contributors, and small teams.</p>
+            <div class="hero-buttons">
+                <a href="#demo" class="btn">Try Demo</a>
+                <a href="https://github.com/splitwise-contract" class="btn btn-secondary">View on GitHub</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="features">
+        <div class="container">
+            <div class="section-title">
+                <h2>Smart Contract Features</h2>
+                <p>Our decentralized profit-splitting solution eliminates trust issues and legal overhead</p>
+            </div>
+            <div class="features">
+                <div class="feature-card">
+                    <div class="feature-icon">💰</div>
+                    <h3>Automatic Profit Distribution</h3>
+                    <p>Instantly splits revenue from yield vaults, NFT sales, royalties, and more between team members according to predefined rules.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚙️</div>
+                    <h3>Customizable Rules</h3>
+                    <p>Set custom distribution ratios, vesting periods, and time-based cliffs tailored to your team's specific needs.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔄</div>
+                    <h3>ERC-4626 Compatible</h3>
+                    <p>Seamlessly works with ERC-4626 yield vaults, NFT marketplaces, and other DeFi protocols.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3>Trustless Operation</h3>
+                    <p>No need to trust any team member - the smart contract handles all distribution automatically and transparently.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📈</div>
+                    <h3>Real-time Tracking</h3>
+                    <p>Monitor profits, distributions, and vesting progress in real-time through an intuitive dashboard.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🛡️</div>
+                    <h3>Audited Security</h3>
+                    <p>Contract has been thoroughly audited to ensure your team's funds are secure and distributed correctly.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section how-it-works" id="how-it-works">
+        <div class="container">
+            <div class="section-title">
+                <h2>How It Works</h2>
+                <p>Setting up fair profit distribution for your team is simple and transparent</p>
+            </div>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Deploy Your Contract</h3>
+                        <p>Deploy a new instance of the SplitWise contract to the blockchain with a few clicks.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Add Team Members</h3>
+                        <p>Specify team members' wallet addresses and their respective profit shares.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Configure Distribution Rules</h3>
+                        <p>Set up vesting schedules, distribution ratios, and other parameters based on your team's agreement.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3>Connect Income Sources</h3>
+                        <p>Link your yield vaults, NFT collections, or other revenue streams to the contract.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <h3>Automatic Distribution</h3>
+                        <p>The contract automatically distributes profits to team members according to the rules set. No manual intervention required.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section use-cases" id="use-cases">
+        <div class="container">
+            <div class="section-title">
+                <h2>Perfect For</h2>
+                <p>The SplitWise contract solves profit distribution challenges across many creative and business scenarios</p>
+            </div>
+            <div class="case-cards">
+                <div class="case-card">
+                    <h3>NFT Creator Collectives</h3>
+                    <p>Split NFT sales and royalties automatically between artists, developers, and marketers based on contribution.</p>
+                </div>
+                <div class="case-card">
+                    <h3>DeFi Yield Strategies</h3>
+                    <p>Distribute yield from DeFi investments among pool contributors with transparent, programmable rules.</p>
+                </div>
+                <div class="case-card">
+                    <h3>DAOs & Community Projects</h3>
+                    <p>Automate treasury management and reward distribution for decentralized organizations.</p>
+                </div>
+                <div class="case-card">
+                    <h3>Content Creator Teams</h3>
+                    <p>Share revenue from tokenized content between writers, editors, researchers, and promoters.</p>
+                </div>
+                <div class="case-card">
+                    <h3>Freelance Collaborations</h3>
+                    <p>Create trustless project payment structures for temporary teams working on client projects.</p>
+                </div>
+                <div class="case-card">
+                    <h3>Revenue Share Models</h3>
+                    <p>Implement complex revenue sharing agreements between partners without legal overhead.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="demo">
+        <div class="container">
+            <div class="section-title">
+                <h2>Interactive Demo</h2>
+                <p>See how the SplitWise contract would work for your team</p>
+            </div>
+            <div class="demo">
+                <div class="demo-header">
+                    <button class="demo-tab active" data-tab="calculator">Distribution Calculator</button>
+                    <button class="demo-tab" data-tab="simulator">Vesting Simulator</button>
+                </div>
+                <div class="demo-content">
+                    <div class="demo-form">
+                        <div class="form-group">
+                            <label for="total-profit">Total Profit</label>
+                            <input type="number" id="total-profit" value="10000" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="currency">Currency</label>
+                            <select id="currency">
+                                <option value="ETH">ETH</option>
+                                <option value="USDC" selected>USDC</option>
+                                <option value="DAI">DAI</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="contributors">
+                        <h3>Team Members</h3>
+                        <div class="contributor">
+                            <div class="contributor-info">
+                                <div class="contributor-icon">👨‍💻</div>
+                                <div>
+                                    <strong>Developer</strong>
+                                    <div>0x1a2...3b4c</div>
+                                </div>
+                            </div>
+                            <div class="contributor-percentage">
+                                <input type="range" min="0" max="100" value="40">
+                                <span>40%</span>
+                            </div>
+                        </div>
+                        <div class="contributor">
+                            <div class="contributor-info">
+                                <div class="contributor-icon">🎨</div>
+                                <div>
+                                    <strong>Designer</strong>
+                                    <div>0xab1...cd2e</div>
+                                </div>
+                            </div>
+                            <div class="contributor-percentage">
+                                <input type="range" min="0" max="100" value="30">
+                                <span>30%</span>
+                            </div>
+                        </div>
+                        <div class="contributor">
+                            <div class="contributor-info">
+                                <div class="contributor-icon">📊</div>
+                                <div>
+                                    <strong>Marketer</strong>
+                                    <div>0x9f8...7e6d</div>
+                                </div>
+                            </div>
+                            <div class="contributor-percentage">
+                                <input type="range" min="0" max="100" value="30">
+                                <span>30%</span>
+                            </div>
+                        </div>
+                        <button class="btn" style="margin-top: 1rem;">+ Add Team Member</button>
+                    </div>
+
+                    <div class="results">
+                        <h3>Distribution Preview</h3>
+                        <div class="result-item">
+                            <span>Developer (40%)</span>
+                            <strong>4,000 USDC</strong>
+                        </div>
+                        <div class="result-item">
+                            <span>Designer (30%)</span>
+                            <strong>3,000 USDC</strong>
+                        </div>
+                        <div class="result-item">
+                            <span>Marketer (30%)</span>
+                            <strong>3,000 USDC</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section cta">
+        <div class="container">
+            <div class="section-title">
+                <h2>Ready to Split Profits Fairly?</h2>
+                <p>Deploy your contract in minutes and start distributing profits automatically</p>
+            </div>
+            <a href="#" class="btn btn-secondary">Deploy Your Contract</a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-col">
+                    <h3>SplitWise</h3>
+                    <p>Fair profit distribution for teams without the trust issues.</p>
+                </div>
+                <div class="footer-col">
+                    <h3>Resources</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Documentation</a></li>
+                        <li><a href="#">GitHub</a></li>
+                        <li><a href="#">Tutorials</a></li>
+                        <li><a href="#">Smart Contract Audit</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Community</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Discord</a></li>
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">Forum</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Legal</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 SplitWise. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Demo functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tab switching
+            const tabs = document.querySelectorAll('.demo-tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    // Here you would normally switch content based on tab
+                });
+            });
+            
+            // Update percentage displays when sliders change
+            const sliders = document.querySelectorAll('.contributor-percentage input');
+            sliders.forEach(slider => {
+                slider.addEventListener('input', function() {
+                    const percentSpan = this.nextElementSibling;
+                    percentSpan.textContent = this.value + '%';
+                    updateDistribution();
+                });
+            });
+            
+            // Listen for total profit change
+            document.getElementById('total-profit').addEventListener('input', updateDistribution);
+            document.getElementById('currency').addEventListener('change', updateDistribution);
+            
+            // Calculate distribution
+            function updateDistribution() {
+                const totalProfit = parseFloat(document.getElementById('total-profit').value) || 0;
+                const currency = document.getElementById('currency').value;
+                const sliders = document.querySelectorAll('.contributor-percentage input');
+                
+                // Calculate total percentage (should sum to 100)
+                let totalPercentage = 0;
+                sliders.forEach(slider => {
+                    totalPercentage += parseInt(slider.value);
+                });
+                
+                // Update results
+                const resultItems = document.querySelectorAll('.result-item');
+                sliders.forEach((slider, index) => {
+                    if (resultItems[index]) {
+                        const percentage = parseInt(slider.value);
+                        const amount = (totalProfit * percentage / 100).toLocaleString();
+                        const resultStrongElement = resultItems[index].querySelector('strong');
+                        resultStrongElement.textContent = `${amount} ${currency}`;
+                    }
+                });
+            }
+            
+            // Wallet connection simulation
+            document.querySelector('a.btn').addEventListener('click', function(e) {
+                if (this.textContent === 'Connect Wallet') {
+                    e.preventDefault();
+                    this.textContent = 'Wallet Connected';
+                    this.style.backgroundColor = '#10b981';
+                    
+                    // Show a simple notification
+                    const notification = document.createElement('div');
+                    notification.style.position = 'fixed';
+                    notification.style.bottom = '20px';
+                    notification.style.right = '20px';
+                    notification.style.backgroundColor = '#10b981';
+                    notification.style.color = 'white';
+                    notification.style.padding = '1rem';
+                    notification.style.borderRadius = '0.375rem';
+                    notification.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
+                    notification.style.zIndex = '1000';
+                    notification.textContent = 'Wallet connected successfully!';
+                    
+                    document.body.appendChild(notification);
+                    
+                    setTimeout(() => {
+                        notification.style.opacity = '0';
+                        notification.style.transition = 'opacity 0.5s';
+                        setTimeout(() => {
+                            document.body.removeChild(notification);
+                        }, 500);
+                    }, 3000);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
